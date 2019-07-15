@@ -1,1 +1,1 @@
-web: gunicorn app:rainfall_prediction
+web: gunicorn app:app
