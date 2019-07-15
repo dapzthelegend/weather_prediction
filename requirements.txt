@@ -1,1 +1,6 @@
 gunicorn==19.9.0
+flask
+sklearn
+numpy
+pandas
+netCDF4
