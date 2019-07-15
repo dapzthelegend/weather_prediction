@@ -22,11 +22,7 @@ model = RainfallModel()
 path='lib/models/Regressor.pkl'
 with open(path, 'rb') as f:
     model.regressor = joblib.load(f)
-    
-    
-#argument parsing
-parser = reqparse.RequestParser()
-parser.add_argument('year')
+
 
 
 @app.route('/')
@@ -43,4 +39,4 @@ def predict():
 
 
 if __name__ == '__main__':
- app.run(debug=True)
+ app.run(debug=False)
