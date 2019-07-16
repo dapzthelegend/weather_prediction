@@ -21,8 +21,8 @@ class RainfallModel(object):
                                          max_depth= 50, 
                                          bootstrap= True, 
                                          max_features="auto", 
-                                         min_samples_leaf= 5, 
-                                         min_samples_split=12, 
+                                         min_samples_leaf= 1, 
+                                         min_samples_split=10, 
                                          random_state = 0)
    
     def split_dataset(self, X, y):
@@ -34,13 +34,19 @@ class RainfallModel(object):
         self.regressor.fit(self.X_train,self.y_train)
     
     
-    def predict(self, year):
-        year = int(year)
+    def predict(self, i):
+        year = int(i)
         if(isinstance(year,int)):
-            year = np.reshape([[year]], (-1,1))
-            rainfall=self. regressor.predict(year)
-            return "The total amount of rainfall of "+ str(year[0][0]) + " (January - December): " + str('{:0.2f}'.format(rainfall[0])) + "mm"
-            
+            if(year >= 1949 and year <= 2019):
+                year = self.scale(year)
+                rainfall=self. regressor.predict(year)
+                return "The total amount of rainfall of "+ str(int(i)) + " (January - December): " + str('{:0.2f}'.format(rainfall[0])) + "mm"
+            elif(year < 1949):
+                return "Enter a year greater than 1949"
+            elif(year >2019):
+                return "Enter a year less than 2019"
+            else:
+                return "Enter a valid year"
         else:
             return "Enter a valid year"
     
@@ -50,6 +56,19 @@ class RainfallModel(object):
         f.close()
         with open(path, 'wb') as model:
             joblib.dump(self.regressor, model)
+            
+    def scale(self,year):
+        min = 1949
+        max = 1994
+        if(year<1990):
+            year = np.reshape([[year]], (-1,1))
+        else:
+            X_std = (year - 1990) / (2022 - 1990)
+            year = X_std * (max - min) + min
+            year = np.reshape([[year]], (-1,1))
+        return year
+    
+   
             
             
     def getParams(self):
@@ -79,6 +98,7 @@ class RainfallModel(object):
         mape = 100 * np.mean(errors / test_labels)
         accuracy = 100 - mape
         return 'Accuracy = {:0.2f}%.'.format(accuracy)
+    
     
     
    

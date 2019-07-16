@@ -34,9 +34,12 @@ def predict():
     if request.method == 'POST':
       year = request.form['year']
       year = np.reshape([[year]], (-1,1))
-      rainfall= model.predict(year)
+      try:
+          rainfall= model.predict(year)
+      except:
+          rainfall = "Enter a valid year"
     return render_template('result.html', prediction =rainfall)
 
 
 if __name__ == '__main__':
- app.run(debug=False)
+ app.run(debug=True)
