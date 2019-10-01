@@ -10,9 +10,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import RandomizedSearchCV
 
- 
- 
- 
+
 class RainfallModel(object):
     
     def __init__(self):
@@ -32,7 +30,6 @@ class RainfallModel(object):
         self.y_train = self.y_train.reshape(-1,1)
         self.y_test = self.y_test.reshape(-1,1)
         self.regressor.fit(self.X_train,self.y_train)
-    
     
     def predict(self, i):
         year = int(i)
@@ -67,10 +64,7 @@ class RainfallModel(object):
             year = X_std * (max - min) + min
             year = np.reshape([[year]], (-1,1))
         return year
-    
-   
-            
-            
+        
     def getParams(self):
         parameters = {
          'max_depth': [15,20,25,30,35,40,45,50, None],
@@ -86,9 +80,7 @@ class RainfallModel(object):
                                     n_jobs =-1)
         random_search = random_search.fit(self.X_train, self.y_train)
        
-    
-    
-    #Funtion to evaluate the model
+    # Funtion to evaluate the model
     def evaluate(self):
         model = self.regressor
         test_features = self.X_train
@@ -98,13 +90,4 @@ class RainfallModel(object):
         mape = 100 * np.mean(errors / test_labels)
         accuracy = 100 - mape
         return 'Accuracy = {:0.2f}%.'.format(accuracy)
-    
-    
-    
    
-      
-       
-
-
-
-
